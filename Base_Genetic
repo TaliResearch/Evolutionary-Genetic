@@ -1,0 +1,73 @@
+import numpy as np
+import pandas as pd
+import random
+import yfinance as yf
+
+# Fetch Apple stock price data from Yahoo Finance for the last 5 years
+data = yf.download('AAPL', period='5y')
+data = data.reset_index()
+
+# Define constants
+POPULATION_SIZE = 100
+GENERATIONS = 50
+MUTATION_RATE = 0.1
+
+# Define the length of the chromosome (number of trading days)
+chromosome_length = len(data)
+
+# Define fitness function
+def fitness_function(chromosome):
+    # Calculate cumulative returns
+    cumulative_returns = np.cumprod(1 + chromosome * data['Close'].pct_change().fillna(0))
+    
+    # Calculate fitness as the final cumulative return
+    fitness = cumulative_returns[-1]
+    
+    return fitness
+
+# Initialize population
+population = []
+for _ in range(POPULATION_SIZE):
+    chromosome = np.random.randint(0, 2, chromosome_length)
+    population.append(chromosome)
+
+# Main loop
+for generation in range(GENERATIONS):
+    print(f'Generation {generation + 1}')
+    
+    # Evaluate fitness for each chromosome
+    fitness_scores = [fitness_function(chromosome) for chromosome in population]
+    
+    # Select parents for reproduction using tournament selection
+    parents = []
+    for _ in range(POPULATION_SIZE):
+        tournament_indices = np.random.choice(len(population), size=2, replace=False)
+        tournament_scores = [fitness_scores[i] for i in tournament_indices]
+        parent_index = tournament_indices[np.argmax(tournament_scores)]
+        parents.append(population[parent_index])
+    
+    # Create offspring through crossover
+    offspring = []
+    for _ in range(POPULATION_SIZE):
+        parent1, parent2 = random.choices(parents, k=2)
+        crossover_point = random.randint(0, chromosome_length)
+        child = np.concatenate((parent1[:crossover_point], parent2[crossover_point:]))
+        offspring.append(child)
+    
+    # Apply mutation to offspring
+    for i in range(POPULATION_SIZE):
+        for j in range(chromosome_length):
+            if random.random() < MUTATION_RATE:
+                offspring[i][j] = 1 - offspring[i][j]  # Flip the bit
+                
+    # Replace the old population with the offspring
+    population = offspring
+
+# Find the best solution
+best_fitness = max(fitness_scores)
+best_index = fitness_scores.index(best_fitness)
+best_solution = population[best_index]
+
+# Print the best solution and its fitness
+print('Best solution:', best_solution)
+print('Fitness:', best_fitness)
