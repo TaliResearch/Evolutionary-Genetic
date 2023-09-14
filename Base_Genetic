@@ -25,6 +25,12 @@ def fitness_function(chromosome):
     
     return fitness
 
+# Initialize population
+population = []
+for _ in range(POPULATION_SIZE):
+    chromosome = np.random.randint(0, 2, chromosome_length)
+    population.append(chromosome)
+
 
 # Initialize population
 population = []
