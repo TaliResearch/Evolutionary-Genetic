@@ -1,21 +1,13 @@
+import numpy as np
+import pandas as pd
+import random
+import yfinance as yf
 
-# Define constants
-POPULATION_SIZE = 100
-GENERATIONS = 50
-MUTATION_RATE = 0.1
+# Fetch Apple stock price data from Yahoo Finance for the last 5 years
+data = yf.download('AAPL', period='5y')
+data = data.reset_index()
 
-# Define the length of the chromosome (number of trading days)
-chromosome_length = len(data)
 
-# Define fitness function
-def fitness_function(chromosome):
-    # Calculate cumulative returns
-    cumulative_returns = np.cumprod(1 + chromosome * data['Close'].pct_change().fillna(0))
-    
-    # Calculate fitness as the final cumulative return
-    fitness = cumulative_returns[-1]
-    
-    return fitness
 
 # Initialize population
 population = []
