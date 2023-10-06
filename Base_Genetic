@@ -1,7 +1,9 @@
+import numpy as np
+import pandas as pd
+import random
+import yfinance as yf
 
-# Fetch Apple stock price data from Yahoo Finance for the last 5 years
-data = yf.download('AAPL', period='5y')
-data = data.reset_index()
+
 
 # Define constants
 POPULATION_SIZE = 100
