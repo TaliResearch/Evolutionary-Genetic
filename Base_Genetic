@@ -3,12 +3,11 @@ import pandas as pd
 import random
 import yfinance as yf
 
+# Fetch Apple stock price data from Yahoo Finance for the last 5 years
+data = yf.download('AAPL', period='5y')
+data = data.reset_index()
 
 
-# Define constants
-POPULATION_SIZE = 100
-GENERATIONS = 50
-MUTATION_RATE = 0.1
 
 # Define the length of the chromosome (number of trading days)
 chromosome_length = len(data)
