@@ -13,8 +13,7 @@ GENERATIONS = 50
 MUTATION_RATE = 0.1
 
 
-# Define the length of the chromosome (number of trading days)
-chromosome_length = len(data)
+
 
 # Define fitness function
 def fitness_function(chromosome):
