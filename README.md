@@ -14,7 +14,7 @@ We initialize the population randomly with binary chromosomes. Then, in each gen
 we evaluate the fitness for each chromosome, select parents for reproduction using tournament selection, 
 create offspring through crossover, apply mutation to the offspring, and replace the old population with the offspring.
 
-
 Finally, we find the best solution based on the highest fitness score and print the best solution and its fitness.
 Note that this code is a simplified example but we must still ensure that we have the necessary 
 stock price data in the correct format.
+
